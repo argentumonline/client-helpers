@@ -109,9 +109,9 @@ Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, X As Sing
         If (Not Cancelled) Then
             Call MyPicture_GetOrSetSingleton(True, Me)
         End If
-    Else
-        RaiseEvent MouseDown(Button, Shift, X, Y)
     End If
+    
+    RaiseEvent MouseDown(Button, Shift, X, Y)
 End Sub
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -137,7 +137,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If (Button = vbRightButton) Then
+    Dim Control As MyPicture
+    Set Control = MyPicture_GetOrSetSingleton(False, Me)
+
+    If (Button = vbRightButton And Not Control Is Nothing) Then
         Call pvEmulateDragDropOperation(X, Y)
     Else
         RaiseEvent MouseUp(Button, Shift, X, Y)
