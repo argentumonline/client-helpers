@@ -38,6 +38,7 @@ Private Declare Function WindowFromPoint Lib "user32" (ByVal xPoint As Long, ByV
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+Public Event Click()
 Public Event DragBegin(ByVal Source As MyPicture, ByVal Shift As Boolean, ByVal X As Single, ByVal Y As Single, ByRef Cancel As Boolean)
 Public Event DragEnd(ByVal Source As MyPicture, ByVal X As Single, ByVal Y As Single)
 Public Event DragMove(ByVal Source As MyPicture, ByVal X As Single, ByVal Y As Single)
@@ -124,6 +125,9 @@ Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, X As Single
     If (Button = vbRightButton) Then
         Call pvEmulateDragDropOperation(X, Y)
     Else
+        If (Button = vbLeftButton) Then
+            RaiseEvent Click
+        End If
         RaiseEvent MouseUp(Button, Shift, X, Y)
     End If
 End Sub
