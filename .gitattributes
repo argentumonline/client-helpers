@@ -1,0 +1,20 @@
+* text eol=crlf
+
+*.ocx -text
+*.msv -text
+*.dll -text
+*.frx -text
+*.ico -text
+*.png -text
+*.gif -text
+*.jpg -text
+*.gif -text
+*.bmp -text
+*.ind -text
+*.con -text
+*.bin -text
+*.mcl -text
+*.mid -text
+*.mp3 -text
+*.wav -text
+

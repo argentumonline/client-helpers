@@ -1,0 +1,14 @@
+## Ignore Visual Basic files
+
+*.vbw
+*.exe
+*.chr
+*.log
+*.txt
+*.csi
+*.lvw
+*.exp
+*.lib
+
+## Thumbs.db file
+*.db
