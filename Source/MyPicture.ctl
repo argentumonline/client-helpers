@@ -21,7 +21,6 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -41,8 +40,8 @@ Private Declare Function WindowFromPoint Lib "user32" (ByVal xPoint As Long, ByV
 Public Event Click()
 Public Event DblClick()
 Public Event DragBegin(ByVal Source As MyPicture, ByVal Shift As Boolean, ByVal X As Single, ByVal Y As Single, ByRef Cancel As Boolean)
-Public Event DragEnd(ByVal Source As MyPicture, ByVal X As Single, ByVal Y As Single)
-Public Event DragMove(ByVal Source As MyPicture, ByVal X As Single, ByVal Y As Single)
+Public Event DragEnd(ByVal Source As MyPicture, ByVal Shift As Boolean, ByVal X As Single, ByVal Y As Single)
+Public Event DragMove(ByVal Source As MyPicture, ByVal Shift As Boolean, ByVal X As Single, ByVal Y As Single)
 Public Event MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Public Event MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Public Event MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -104,7 +103,9 @@ Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, X As Sing
     Dim Cancelled As Boolean
     
     If (Button = vbRightButton) Then
-        RaiseEvent DragBegin(Me, Shift > 0, X, Y, Cancelled)
+        s_Press_Key_1 = (Shift > 0)
+    
+        RaiseEvent DragBegin(Me, s_Press_Key_1, X, Y, Cancelled)
         
         If (Not Cancelled) Then
             Call MyPicture_GetOrSetSingleton(True, Me)
@@ -123,10 +124,10 @@ Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, X As Sing
 
     If (Not Control Is Nothing) Then
         If (Button = 0) Then
-            RaiseEvent DragEnd(Control, X, Y)
+            RaiseEvent DragEnd(Control, s_Press_Key_1, X, Y)
             Call MyPicture_GetOrSetSingleton(True, Nothing)
         ElseIf (Button = vbRightButton) Then
-            RaiseEvent DragMove(Control, X, Y)
+            RaiseEvent DragMove(Control, s_Press_Key_1, X, Y)
         End If
     Else
         RaiseEvent MouseMove(Button, Shift, X, Y)
@@ -168,4 +169,6 @@ Private Sub pvEmulateDragDropOperation(ByVal X As Single, ByVal Y As Single)
     
     Call ScreenToClient(Control, Cursor)
     Call SendMessage(Control, &H200, 0&, (Cursor.Y * &H10000) Or (Cursor.X And &HFFFF&))
+    
+    Call MyPicture_GetOrSetSingleton(True, Nothing)
 End Sub
