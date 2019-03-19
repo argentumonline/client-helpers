@@ -1,5 +1,7 @@
 ## Ignore Visual Basic files
 
+*.oca
+*.ocx
 *.vbw
 *.exe
 *.chr
